@@ -2,13 +2,14 @@
 
 1. sample-dbを立ち上げる
 
-```
+```bash
 cd sample-db
 docker compose up -d
 ```
 
 2.テーブルとトリガーを削除せず、同期する
-```
+
+```bash
 docker compose up -d
 
 docker exec -it percona-toolkit bash
@@ -17,6 +18,7 @@ pt-online-schema-change --alter "ADD COLUMN new_column INT" --user=root --passwo
 ```
 
 ## 各種Option
+
 - 監視系option
   - --max-load
     - デフォルト：25スレッド
@@ -80,7 +82,8 @@ pt-online-schema-change --alter "ADD COLUMN new_column INT" --user=root --passwo
     - 元のテーブルを参照していた外部キーは、存在しないテーブルを参照するようになる
 
 外部キーが貼られているか確認するクエリ
-```
+
+```sql
 SELECT
 TABLE_NAME AS 参照元テーブル,
 COLUMN_NAME AS 参照元カラム,
@@ -94,6 +97,6 @@ TABLE_SCHEMA = 'testdb'
 AND REFERENCED_TABLE_NAME = 'test1';
 ```
 
-
 ## 公式ドキュメント
-https://docs.percona.com/percona-toolkit/pt-online-schema-change.html
+
+<https://docs.percona.com/percona-toolkit/pt-online-schema-change.html>
