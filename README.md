@@ -52,10 +52,13 @@ pt-online-schema-change --alter "ADD COLUMN new_column INT" --user=root --passwo
   - --set-vars
     - デフォルト
       - wait_timeout=10000
+        - サーバーがクライアント接続を待機する最大時間（秒）
       - innodb_lock_wait_timeout=1
+        - 行ロックの待機時間（秒）
       - lock_wait_timeout=60
+        - メタデータロックを取得するための待機時間（秒）
     - 設定方法例
-      - --set-vars lock_wait_timeout=10,innodb_lock_wait_timeout=1,lock_wait_timeout=1
+      - --set-vars lock_wait_timeout=10,innodb_lock_wait_timeout=5,lock_wait_timeout=5
   - --tries
     - デフォルト:1秒間隔で10回
     - lock_wait_timeoutを超えてDDLが失敗した場合は、pt-oscが自動で再試行する。
