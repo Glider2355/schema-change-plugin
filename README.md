@@ -19,6 +19,12 @@ pt-online-schema-change --alter "ADD COLUMN new_column INT" --user=root --passwo
 
 ## 各種Option
 
+- どこまで実行するかoption
+  - --no-swap-tables
+    - renameによるtableの入れ替えを行わない
+  - --no-drop-triggers
+    - 同期する際のトリガを削除しない
+
 - 監視系option
   - --max-load
     - デフォルト：25スレッド
@@ -26,6 +32,7 @@ pt-online-schema-change --alter "ADD COLUMN new_column INT" --user=root --passwo
   - --critical-load
     - デフォルト：50スレッド
     - 指定スレッド数を超えた場合、処理を終了する
+
 - 実行系option
   - --dry-run
     - 実際には処理が行われないドライラン確認用オプション
