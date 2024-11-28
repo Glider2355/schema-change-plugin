@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model test1 {
+  id          Int      @id @default(autoincrement())
+  user_id     Int
+  date        DateTime @db.Date
+  start_time  DateTime @db.Time()
+  end_time    DateTime @db.Time()
+
+  // 複合インデックス（例: user_id と date の組み合わせ）
+  @@index([user_id, date])
+}
+
+
+// エンティティアトリビュートバリュー
+model test2 {
+  id          Int      @id @default(autoincrement())
+  kind        Int
+  date        DateTime @db.Date
+  start_time  DateTime @db.Time()
+  end_time    DateTime @db.Time()
+}
+
+model test2_relations {
+  id              Int      @id @default(autoincrement())
+  relation_kind   Int
+  test2_id        Int
+  relation_id     Int
+}

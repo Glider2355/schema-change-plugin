@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  percona-toolkit:
+    image: percona/percona-toolkit:latest
+    container_name: percona-toolkit
+    entrypoint: /bin/bash
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./schema_changes:/schema_changes
+      - ./plugins:/plugins # プラグインファイルを保存するディレクトリ
+    working_dir: /schema_changes
+    network_mode: "host" # MySQLサーバーがホストマシン上にある場合
