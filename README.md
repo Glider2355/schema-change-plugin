@@ -1,4 +1,8 @@
-# サンプルのMySQLでスキーマ変更をする方法
+# 概要
+
+pt-online-schema-changeのプラグインを含んだリポジトリです。
+
+## サンプルのMySQLでスキーマ変更をする方法
 
 1. sample-dbを立ち上げる
 
@@ -33,21 +37,23 @@ RENAME TABLE
 DROP TABLE testdb.test1_backup;
 ```
 
-## 各種Option
+## トリガーを作成せずにデータ同期を行う方法
 
-- どこまで実行するかoption
-  - --no-swap-tables
-    - renameによるtableの入れ替えを行わない
-  - --no-drop-triggers
-    - 同期する際のトリガを削除しない
+```sql
+pt-online-schema-change --alter "ADD COLUMN new_column2 INT" --plugin /plugins/SkipCreateTriggers.pm --user=root --password=root --host=127.0.0.1 --port=3306 D=testdb,t=test1 --no-swap-tables --no-drop-new-table --execute
+```
+
+## 各種Option
 
 - 監視系option
   - --max-load
     - デフォルト：25スレッド
     - 指定スレッド数を超えた場合、処理を一時停止
+    - 負荷が落ち着くと再開する
   - --critical-load
     - デフォルト：50スレッド
     - 指定スレッド数を超えた場合、処理を終了する
+    - 一時テーブルやトリガーは残る
 
 - 実行系option
   - --dry-run
@@ -57,6 +63,13 @@ DROP TABLE testdb.test1_backup;
   - --nodrop-old-table
     - デフォルト: yes
     - スキーマ変更前の旧テーブルのDROPを行わないオプション。確認で残しておきたい時に
+  - --no-swap-tables
+    - renameによるtableの入れ替えを行わない
+  - --no-drop-triggers
+    - 同期する際のトリガを削除しない
+  - --where
+    - 同期するレコードの対象を決める
+    - 例: --where "id > 1234" (idが1235以降のレコードだけ同期される)
 
 - チャンクの調整系option
   - --sleep N
